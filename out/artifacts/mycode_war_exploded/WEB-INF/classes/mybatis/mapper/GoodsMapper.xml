@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.javademo.mapper.GoodsMapper">
+    <select id="getList" parameterType="goods" resultType="goods">
+        select * from goods
+        <where>
+            <if test="state>0">
+                state = #{state}
+            </if>
+            <if test="id!=null and id!=''">
+                and id = #{id}
+            </if>
+            <if test="name!=null and name!=''">
+                and name like '%${name}%'
+            </if>
+            <if test="shopname!=null and shopname!=''">
+                and shopname like '%${shopname}%'
+            </if>
+            <if test="keyword!=null and keyword!=''">
+                and (name like '%${keyword}%' or shopname like '%${shopname}%')
+            </if>
+            <if test="des!=null and des!=''">
+                and des like '%${des}%'
+            </if>
+            <if test="coverImage!=null and coverImage!=''">
+                and coverImage = #{coverImage}
+            </if>
+            <if test="price!=null and price!=''">
+                and price = #{price}
+            </if>
+
+            <if test="ishot!=null and ishot!=''">
+                and ishot = #{ishot}
+            </if>
+
+        </where>
+    </select>
+
+    <insert id="add" parameterType="goods">
+        insert into goods(name,shopname,des,coverImage,price,ishot,createTime,updateTime)
+        values(#{name},#{shopname},#{des},#{coverImage},#{price},#{ishot},now(),now())
+    </insert>
+
+    <update id="delete" parameterType="goods">
+        update goods set state=2 where id=#{id}
+    </update>
+
+    <update id="update" parameterType="goods">
+        update goods set
+        name=#{name},
+        shopname=#{shopname},
+        des=#{des},
+        coverImage=#{coverImage},
+        price=#{price},
+        ishot=#{ishot},
+        updateTime=now()
+        where id=#{id}
+    </update>
+
+    <update id="updateState" parameterType="goods">
+        update goods set state=#{state} where id=#{id}
+    </update>
+
+</mapper>
+
+
